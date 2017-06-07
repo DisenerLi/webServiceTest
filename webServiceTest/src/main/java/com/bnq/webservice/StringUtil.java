@@ -12,9 +12,18 @@ public class StringUtil {
         return s == null?false:(EMPTYSTR.equals(s)?true:false);
 
     }
+    public boolean isNotEmpty(String s){
+        return !isEmpty(s);
+
+    }
 
     public boolean isNull(String s){
         return s == null?true:false;
+
+    }
+
+    public boolean isNotNull(String s){
+        return !isNull(s);
 
     }
 }
