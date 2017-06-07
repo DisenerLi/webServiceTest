@@ -1,5 +1,7 @@
 package example;
 
+import com.bnq.dao.PojoDao;
+import com.bnq.entity.Pojo;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -24,9 +26,10 @@ import org.slf4j.LoggerFactory;
     targetNamespace = "http://www.tmp.web/ws/hello")
 public class HelloWorld {
 
-  private final static String config = "log4j.xml";
+  private final static String config = "config/log4j.xml";
   protected static Logger logger = LoggerFactory.getLogger("webservice_log");
 
+  private PojoDao pojoDao;
     static void loadFile() {
       URL fileurl = HelloWorld.class.getClassLoader().getResource(config);
       /*URI uri = fileurl.toURI();
@@ -56,23 +59,30 @@ public class HelloWorld {
     }
 
   public HelloWorld(){
-      //HelloWorld.class.getResource("D:\\workspace\\webServiceTest\\src\\main\\resources\\log4j.xml");
       //BasicConfigurator.configure();
   }
 
 
   @WebMethod
-  public  @WebResult(name="result")String sayHelloWorldFrom(String from) {
+  public  @WebResult(name="result")String sayHelloWorldFrom(String id) {
 
-    String result = "Hello, world, from " + from;
-    logger.debug("get service interface param from : [{}]" ,from);
-    logger.info(result);
-    return result;
+    logger.debug("get service interface param from : [{}]" ,id);
+      Pojo pojo = null;
+      try {
+          pojo = pojoDao.getPojoById(Long.valueOf(id));
+          if(pojo != null){
+              logger.info(pojo.toString());
+          }
+    }catch (Exception e){
+        logger.error("查询出错",e);
+    }
+    return pojo.toString();
   }
+
   public static void main(String[] argv) throws Exception{
     loadFile();
     Object implementor = new HelloWorld ();
-    String address = "http://localhost:9000/HelloWorld";
+    String address = "http://localhost:80/HelloWorld";
     Endpoint endpoint = Endpoint.publish(address, implementor);
     if(endpoint.isPublished()){
         List<Source> metadata= endpoint.getMetadata();
@@ -83,4 +93,12 @@ public class HelloWorld {
         }
     }
   }
+
+    public PojoDao getPojoDao() {
+        return pojoDao;
+    }
+
+    public void setPojoDao(PojoDao pojoDao) {
+        this.pojoDao = pojoDao;
+    }
 }

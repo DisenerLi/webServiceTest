@@ -11,7 +11,7 @@
     <title>index page</title>
   </head>
   <body>
-    <div></div>
+    <div>Hello World !</div>
     <div></div>
     <div></div>
   </body>
