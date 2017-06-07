@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="pojo">
+
+    <resultMap id="pojo" type="com.bnq.entity.Pojo">
+        <!--<constructor>
+            <idArg column="id" javaType="Long" jdbcType="INT"></idArg>
+            <arg column="location" javaType="String" jdbcType="VARCHAR"></arg>
+            <arg column="cityId" javaType="Long" jdbcType="INT"></arg>
+            <arg column="detail" javaType="String" jdbcType="VARCHAR"></arg>
+            <arg column="tdate" javaType="Date" jdbcType="DATE"></arg>
+            <arg column="temperature_max" javaType="Integer" jdbcType="INT"></arg>
+            <arg column="temperature_min" javaType="Integer" jdbcType="INT"></arg>
+            <arg column="isbool" javaType="Boolean" jdbcType="BOOLEAN"></arg>
+            <arg column="aByte" javaType="Byte" jdbcType="TINYINT"></arg>
+        </constructor>-->
+        <id property="id" column="id" javaType="Long" />
+        <result property="location" column="location" />
+        <result property="cityId" column="city_id" />
+        <result property="tdate" column="tdate" />
+        <result property="temperature_max" column="temperature_max" />
+        <result property="temperature_min" column="temperature_min" />
+        <result property="isbool" column="isbool" />
+        <result property="aByte" column="aByte" />
+        <association property="users" column="user_id" select="getUserById" />
+    </resultMap>
+
+    <resultMap id="user" type="com.bnq.entity.User" >
+        <id property="id" column="id" />
+        <result property="gender" column="gender" />
+        <result property="level" column="level" />
+        <result property="location" column="location" />
+        <result property="userid" column="userid" />
+        <result property="username" column="username" />
+        <result property="userpwd" column="userpwd" />
+        <result property="userType" column="usertype" />
+    </resultMap>
+
+    <sql id="usercolumsList" >
+        id
+        ,gender
+        ,level
+        ,location
+        ,userid
+        ,username
+        ,userpwd
+        ,usertype
+    </sql>
+
+    <sql id="pojocolumsList" >
+        id
+        ,location
+        ,city_id
+        ,tdate
+        ,temperature_max
+        ,temperature_min
+        ,isbool
+        ,aByte
+    </sql>
+
+    <select id="getUserById" resultMap="user" parameterType="com.bnq.entity.User" >
+        select
+        <include refid="usercolumsList" />
+        from studys.user t
+       <include refid="queryWhereSql">
+           <property name="alias" value="t."/>
+       </include>
+    </select>
+    <select id="getPojoById" resultMap="pojo" parameterType="com.bnq.entity.Pojo" >
+        select
+        <include refid="pojocolumsList" />
+        from studys.pojo t
+        <include refid="queryWhereSql">
+            <property name="alias" value="t."/>
+        </include>
+    </select>
+    <sql id="queryWhereSql"  >
+        <trim prefix="where" suffix="AND|OR" suffixOverrides=",">
+            <if test="id != null and id != ''">
+              and #{alias}id = #{id}
+            </if>
+            <choose>
+                <when test="username != null">
+                    #{alias}username = #{username}
+                </when>
+                <when test="location != null">
+                    #{alias}location = #{location}
+                </when>
+                <otherwise>
+                    1 = 1
+                </otherwise>
+            </choose>
+        </trim>
+    </sql>
+
+    <sql id="setSql">
+        <set>
+            <if test="if location != null">
+                location = #{location},
+            </if>
+            <if test="if location != null">
+                username = #{username},
+            </if>
+             <if test="if userpwd != null">
+                 userpwd = #{userpwd},
+            </if>
+
+            <if test="if location != null">
+                username = #{username},
+            </if>
+
+        </set>
+    </sql>
+</mapper>
