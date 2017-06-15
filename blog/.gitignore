@@ -13,9 +13,7 @@
 target
 .classpath
 .settings
-.idea/
-.idea/libraries
-.idea/artifacts
+/.idea
 *.iml
 *.iws
 classes/
