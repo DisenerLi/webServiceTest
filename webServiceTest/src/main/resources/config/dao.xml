@@ -12,6 +12,6 @@
         <!-- <property name="configLocation" value="classpath:config/mybatis-config.xml"></property> -->
     </bean>
     <bean id="helloworld" class="example.HelloWorld">
-        <property name="pojoDao" ref="pojodao"/>
+        <property name="pojoDao" ref="pojoDao"/>
     </bean>
 </beans>

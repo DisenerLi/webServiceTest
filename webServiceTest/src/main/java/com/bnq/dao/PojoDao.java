@@ -2,8 +2,9 @@ package com.bnq.dao;
 
 import com.bnq.ao.PojoQuery;
 import com.bnq.entity.Pojo;
-import java.util.List;
 import org.apache.poi.ss.formula.functions.T;
+
+import java.util.List;
 
 /**
  * Created by liqiang on 2017/4/13.
@@ -25,4 +26,5 @@ public interface PojoDao {
     void updatePojo(Pojo pojo) throws Exception;
 
     void queryByParam(PojoQuery query) throws Exception;
+
 }
