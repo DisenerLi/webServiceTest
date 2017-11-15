@@ -5,5 +5,5 @@
     <endpoint
             name='HelloWorld'
             implementation='example.HelloWorld'
-            url-pattern='/services/HelloWorld'/>
+            url-pattern='/services/HelloWorld' />
 </endpoints>

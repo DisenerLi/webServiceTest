@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:core="http://jax-ws.dev.java.net/spring/core"
+       xmlns:servlet="http://jax-ws.dev.java.net/spring/servlet"
+       xmlns:jaxws="http://jax-ws.dev.java.net/spring/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                        http://jax-ws.dev.java.net/spring/core
+                        http://jax-ws.dev.java.net/spring/core.xsd
+                        http://jax-ws.dev.java.net/spring/servlet
+                        http://jax-ws.dev.java.net/spring/servlet.xsd">
+
+    <servlet:binding url="/services">
+        <servlet:service>
+            <!-- bean属性表示WebService的注入对象,注意其值要在开头加井号,后跟Spring管理的SIB的Bean名称 -->
+            <core:service bean="#helloWorld">
+                <!-- 此时就不需要在SIB中@HandlerChain(file="myHandlerChain.xml")了,也不用编写myHandlerChain.xml了 -->
+                <!--<core:handlers>-->
+                    <!--<bean class="com.jadyer.handler.LicenseHandler"/>-->
+                <!--</core:handlers>-->
+                <!-- 主动声明wsdl文件import或include的外部文件,否则其发布的wsdl中是不会正确引入xsd的 -->
+                <!--
+                <core:metadata>
+                    <value>/WEB-INF/wsdl/myhello.xsd</value>
+                </core:metadata>
+                 -->
+            </core:service>
+        </servlet:service>
+    </servlet:binding>
+
+</beans>

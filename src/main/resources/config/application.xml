@@ -17,38 +17,10 @@
         <property name="maxUploadSize" value="10240000"/>
         <property name="defaultEncoding" value="utf-8" />
     </bean>
-    <bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">
-        <property name="baseAddress" value="http://localhost:8080/services/"/>
-    </bean>
-<!--    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${driver}"/>
-        <property name="url" value="${url}"/>
-        <property name="username" value="${user}"/>
-        <property name="password" value="${password}"/>
-        &lt;!&ndash; maxActive: 最大连接数量 &ndash;&gt;
-        <property name="maxActive" value="10"/>
-        &lt;!&ndash; minIdle: 最小空闲连接 &ndash;&gt;
-        <property name="minIdle" value="5"/>s
-        &lt;!&ndash; maxIdle: 最大空闲连接 &ndash;&gt;
-        <property name="maxIdle" value="20"/>
-        &lt;!&ndash; initialSize: 初始化连接 &ndash;&gt;
-        <property name="initialSize" value="30"/>
-        &lt;!&ndash; 连接被泄露时是否打印 &ndash;&gt;
-        <property name="logAbandoned" value="true"/>
-        &lt;!&ndash; removeAbandoned: 是否自动回收超时连接 &ndash;&gt;
-        <property name="removeAbandoned" value="true"/>
-        &lt;!&ndash; removeAbandonedTimeout: 超时时间(以秒数为单位) &ndash;&gt;
-        <property name="removeAbandonedTimeout" value="10"/>
-        &lt;!&ndash; maxWait: 超时等待时间以毫秒为单位 1000等于60秒 &ndash;&gt;
-        <property name="maxWait" value="1000"/>
-        &lt;!&ndash;  在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位.  &ndash;&gt;
-        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
-        &lt;!&ndash;  在每次空闲连接回收器线程(如果有)运行时检查的连接数量 &ndash;&gt;
-        <property name="numTestsPerEvictionRun" value="10"/>
-        &lt;!&ndash; 1000 * 60 * 30  连接在池中保持空闲而不被空闲连接回收器线程 &ndash;&gt;
-        <property name="minEvictableIdleTimeMillis" value="10000"/>
-        <property name="validationQuery" value="SELECT NOW() FROM DUAL"/>
+    <!--<bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">
+        <property name="baseAddress" value="http://127.0.0.1:8080/services/"/>
     </bean>-->
 
     <import resource="data.xml"/>
+    <import resource="web-service.xml"/>
 </beans>

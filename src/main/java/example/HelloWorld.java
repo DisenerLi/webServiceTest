@@ -1,36 +1,51 @@
 package example;
 
-import com.bnq.entity.Pojo;
+import com.bnq.ao.ProductAO;
+import com.bnq.entity.ProductCountDO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.xml.transform.Source;
 import javax.xml.ws.Endpoint;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liqiang on 2017/3/23.
  */
 //@Component
+
+@SOAPBinding(style = SOAPBinding.Style.RPC)
 @WebService(
     endpointInterface = "example.HelloWorld",
     portName = "HelloWSPort",
     serviceName = "HelloWSService",
     targetNamespace = "http://www.tmp.web/ws/hello")
-public class HelloWorld {
+@Service
+public class HelloWorld extends SpringBeanAutowiringSupport {
 
   private final static String config = "config/log4j.xml";
   protected static Logger logger = LoggerFactory.getLogger("webservice_log");
 
   //private PojoDao pojoDao;
+    @Resource
+    private ProductAO productAO;
+
+    //@Resource
+    //private WebServiceContext wsc;
     static void loadFile() {
       URL fileurl = HelloWorld.class.getClassLoader().getResource(config);
       /*URI uri = fileurl.toURI();
@@ -68,16 +83,34 @@ public class HelloWorld {
   public  @WebResult(name="result")String sayHelloWorldFrom(String id) {
 
     logger.debug("get service interface param from : [{}]" ,id);
-      Pojo pojo = null;
+      String Json = "";
+      //MessageContext ctx = wsc.getMessageContext();
+      //HttpServletRequest request = (HttpServletRequest)ctx.get(SOAPMessageContext.SERVLET_REQUEST);
+      //logger.debug("----------------------------------------------------------------------");
+      //logger.debug("ServletContextName=" + request.getSession().getServletContext().getServletContextName());
+      //logger.debug("ContextPath=" + request.getSession().getServletContext().getContextPath());
+      //logger.debug("RealPath=" + request.getSession().getServletContext().getRealPath("/"));
+      //logger.debug("ServerInfo=" + request.getSession().getServletContext().getServerInfo());
+      //logger.debug("----------------------------------------------------------------------");
       try {
           //pojo = pojoDao.getPojoById(Long.valueOf(id));
-          if(pojo != null){
-              logger.info(pojo.toString());
+          ProductCountDO productCountDO = new ProductCountDO();
+          productCountDO.setProductName(id);
+          productCountDO.setProductNum(10);
+          //if(productAO == null){
+          //    productAO = ContextLoaderListener.getCurrentWebApplicationContext().getBean(ProductAO.class);
+          //}
+          Map<String,Object> resMap = productAO.createProduct(productCountDO);
+          ObjectMapper mapper = new ObjectMapper();
+          // Convert object to JSON string
+          Json =  mapper.writeValueAsString(resMap);
+          if(resMap != null){
+              logger.info("res:"+ Json);
           }
     }catch (Exception e){
         logger.error("查询出错",e);
     }
-    return "hello "+id;
+    return "hello "+ Json;
   }
 
   public static void main(String[] argv) throws Exception{
