@@ -7,7 +7,7 @@
     <groupId>com.baj</groupId>
     <artifactId>webServiceTest</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
     <developers>
         <developer>
@@ -18,6 +18,10 @@
             <organizationUrl>http://www.bnq.com.cn/</organizationUrl>
         </developer>
     </developers>
+
+    <modules>
+        <module>service-biz</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,7 +82,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
-            <scope>test</scope>
+            <!--<scope>test</scope>-->
         </dependency>
 
         <dependency>
@@ -294,8 +298,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
