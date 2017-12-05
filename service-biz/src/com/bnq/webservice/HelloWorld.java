@@ -1,4 +1,4 @@
-package example;
+package com.bnq.webservice;
 
 import com.bnq.ao.ProductAO;
 import com.bnq.entity.ProductCountDO;
@@ -30,7 +30,7 @@ import java.util.Map;
 
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 @WebService(
-    endpointInterface = "example.HelloWorld",
+    endpointInterface = "com.bnq.webservice.HelloWorld",
     portName = "HelloWSPort",
     serviceName = "HelloWSService",
     targetNamespace = "http://www.tmp.web/ws/hello")

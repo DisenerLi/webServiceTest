@@ -4,6 +4,6 @@
 
     <endpoint
             name='HelloWorld'
-            implementation='example.HelloWorld'
+            implementation='com.bnq.webservice.HelloWorld'
             url-pattern='/services/HelloWorld' />
 </endpoints>

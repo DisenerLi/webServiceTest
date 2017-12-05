@@ -2,8 +2,10 @@ package example;
 
 import com.bnq.publish.SpringTestPublisher;
 import javax.annotation.Resource;
+import org.apache.xbean.spring.context.ClassPathXmlApplicationContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,9 +24,11 @@ public class SpringPubEventTest {
     private SpringTestPublisher publisher;
 
     public static void main(String[] args) {
-        SpringTestPublisher publisher = new SpringTestPublisher();
+        ApplicationContext context = new ClassPathXmlApplicationContext("config/application.xml");
+        SpringTestPublisher publisher = (SpringTestPublisher) context.getBean("springTestPublisher");
         publisher.processTestEvent("hello world");
     }
+
     @Test
     public void testPubEvent(){
         publisher.processTestEvent("hello world");

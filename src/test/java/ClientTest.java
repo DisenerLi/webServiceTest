@@ -1,5 +1,5 @@
 import com.bnq.entity.Pojo;
-import example.HelloWorld;
+import com.bnq.webservice.HelloWorld;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 

@@ -1,9 +1,9 @@
 package com.reflect.test;
 
 import com.bnq.entity.User;
+import com.bnq.webservice.HelloWorld;
 import com.reflect.bean.AbsClass;
 import com.reflect.bean.ClassBean;
-import example.HelloWorld;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -22,7 +22,7 @@ public class ClassTest {
         ClassLoader loader2 ;
         ClassLoader loader3 ;
         try {
-            Class hello = loader.loadClass("example.HelloWorld");
+            Class hello = loader.loadClass("com.bnq.webservice.HelloWorld");
             loader2 = hello.getClassLoader();
             Class.forName("com.bnq.entity.User");
             HelloWorld helloWorld = new HelloWorld();
