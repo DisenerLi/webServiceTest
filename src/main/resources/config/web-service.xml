@@ -12,7 +12,7 @@
                         http://jax-ws.dev.java.net/spring/servlet
                         http://jax-ws.dev.java.net/spring/servlet.xsd">
 
-    <servlet:binding url="/services">
+    <servlet:binding url="/services/HelloWorld">
         <servlet:service>
             <!-- bean属性表示WebService的注入对象,注意其值要在开头加井号,后跟Spring管理的SIB的Bean名称 -->
             <core:service bean="#helloWorld">

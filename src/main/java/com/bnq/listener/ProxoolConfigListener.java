@@ -1,8 +1,5 @@
 package com.bnq.listener;
 
-import java.io.File;
-import java.util.Enumeration;
-import java.util.Properties;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -13,6 +10,10 @@ import org.logicalcobwebs.proxool.ProxoolFacade;
 import org.logicalcobwebs.proxool.configuration.JAXPConfigurator;
 import org.logicalcobwebs.proxool.configuration.PropertyConfigurator;
 import org.logicalcobwebs.proxool.configuration.ServletConfigurator;
+
+import java.io.File;
+import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * Created by liqiang on 2017/4/14.

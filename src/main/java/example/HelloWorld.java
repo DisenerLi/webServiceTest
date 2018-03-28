@@ -14,7 +14,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.File;
@@ -26,15 +26,14 @@ import java.util.Map;
 /**
  * Created by liqiang on 2017/3/23.
  */
-//@Component
 
+@Component
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 @WebService(
     endpointInterface = "example.HelloWorld",
     portName = "HelloWSPort",
     serviceName = "HelloWSService",
     targetNamespace = "http://www.tmp.web/ws/hello")
-@Service
 public class HelloWorld extends SpringBeanAutowiringSupport {
 
   private final static String config = "config/log4j.xml";
@@ -46,7 +45,7 @@ public class HelloWorld extends SpringBeanAutowiringSupport {
 
     //@Resource
     //private WebServiceContext wsc;
-    static void loadFile() {
+    public static void loadFile() {
       URL fileurl = HelloWorld.class.getClassLoader().getResource(config);
       /*URI uri = fileurl.toURI();
       System.out.println("uri.getRawPath() : " +uri.getRawPath());
@@ -82,7 +81,7 @@ public class HelloWorld extends SpringBeanAutowiringSupport {
   @WebMethod
   public  @WebResult(name="result")String sayHelloWorldFrom(String id) {
 
-    logger.debug("get service interface param from : [{}]" ,id);
+    logger.info("get service interface param from : [{}]" ,id);
       String Json = "";
       //MessageContext ctx = wsc.getMessageContext();
       //HttpServletRequest request = (HttpServletRequest)ctx.get(SOAPMessageContext.SERVLET_REQUEST);

@@ -1,28 +1,28 @@
-import com.bnq.entity.Pojo;
-import example.HelloWorld;
+import com.bnq.webservice.client.HelloWorld;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
+import org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean;
 
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by liqiang on 2017/4/6.
  */
 public class ClientTest {
     public static void main(String[] args) throws Exception {
-        URL wsdlURL = new URL("http://localhost:8080/services/HelloWorld?wsdl");
+        URL wsdlURL = new URL("http://localhost:8080/webService/services/HelloWorld?wsdl");
         QName serviceName = new QName("http://www.tmp.web/ws/hello","HelloWSService");
         Service service = Service.create(wsdlURL,serviceName);
         HelloWorld helloWorld = service.getPort(HelloWorld.class);
         String res = helloWorld.sayHelloWorldFrom(" jack");
         System.out.println("response = [" + res + "]");
+        JaxWsPortProxyFactoryBean clientWebService = clientWebService();
+        Object object = clientWebService.getObject();
         //other method
         //HelloWorld helloWorld1 = HelloWorldService.create();
 
-        Pojo p = new Pojo();
-        List<Integer> emtList = new ArrayList<Integer>();
+
         /*System.out.println("args = [" + emtList.get(0) + "]") ;*/
    /*     if(p.getaByte() >0 ){
 
@@ -34,5 +34,19 @@ public class ClientTest {
         if(1 > p.getTemperature_max()){
             System.out.println("args = [" + p.getTemperature_max() + "]");
         }*/
+    }
+
+    public static JaxWsPortProxyFactoryBean clientWebService(){
+        JaxWsPortProxyFactoryBean proxy = new JaxWsPortProxyFactoryBean();
+        try {
+            proxy.setWsdlDocumentUrl(new URL("http://localhost:8080/webService/services/HelloWorld?wsdl"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        proxy.setServiceName("HelloWSService");
+        //proxy.setPortName("SpitterServiceEndpointPort");
+        proxy.setNamespaceUri("http://www.tmp.web/ws/hello");
+        proxy.setServiceInterface(HelloWorld.class);
+        return proxy;
     }
 }
