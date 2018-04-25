@@ -10,7 +10,6 @@
             <param name="ConversionPattern" value="%d %-5p %l - %m%n" />
         </layout>
     </appender>
-
     <appender name="webservice_console" class="org.apache.log4j.ConsoleAppender" >
         <param name="target" value="System.out" />
         <param name="Threshold" value="debug" />
@@ -29,20 +28,20 @@
     </appender>
 
     <logger name="service" additivity="false" >
-        <level value="ALL" />
+        <level value="INFO" />
         <appender-ref ref="webservice_log"  />
         <appender-ref ref="webservice_console"  />
     </logger>
-    
+
     <logger name="root" additivity="false">
         <level value="ERROR"/>
         <appender-ref ref="service_error_log"/>
     </logger>
 
     <root>
-        <priority value="INFO" />
+        <priority value="ERROR" />
         <appender-ref ref="webservice_console" />
         <!--<appender-ref ref="webservice_log" />-->
     </root>
-
+    
 </log4j:configuration>

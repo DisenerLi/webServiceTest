@@ -3,7 +3,6 @@ package com.reflect.test;
 import com.bnq.entity.User;
 import com.reflect.bean.AbsClass;
 import com.reflect.bean.ClassBean;
-import example.HelloWorld;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -20,13 +19,13 @@ public class ClassTest {
         Class clzss = classBean.getClass();
         ClassLoader loader = clzss.getClassLoader();
         ClassLoader loader2 ;
-        ClassLoader loader3 ;
+        ClassLoader loader3 = null;
         try {
             Class hello = loader.loadClass("example.HelloWorld");
             loader2 = hello.getClassLoader();
             Class.forName("com.bnq.entity.User");
-            HelloWorld helloWorld = new HelloWorld();
-            loader3 = helloWorld.getClass().getClassLoader();
+           /* HelloWorld helloWorld = new HelloWorld();
+            loader3 = helloWorld.getClass().getClassLoader();*/
             System.out.println(loader.equals(loader2));
             System.out.println(loader.equals(loader3));
             System.out.println(loader.getParent().toString());

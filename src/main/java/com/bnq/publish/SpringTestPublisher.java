@@ -1,5 +1,6 @@
 package com.bnq.publish;
 
+import com.bnq.event.MyEvent;
 import com.bnq.event.SpringTestEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -18,7 +19,11 @@ public class SpringTestPublisher implements ApplicationEventPublisherAware {
         this.publisher = applicationEventPublisher;
     }
 
-    public void processTestEvent(String msg){
+    public void processTestEvent(String msg) {
         publisher.publishEvent(new SpringTestEvent(this, msg));
+    }
+
+    public void processMyEvent(String msg) {
+        publisher.publishEvent(new MyEvent(this, msg));
     }
 }

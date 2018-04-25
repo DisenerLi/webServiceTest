@@ -8,4 +8,5 @@ import org.slf4j.LoggerFactory;
  */
 public interface Log {
     Logger logger = LoggerFactory.getLogger("service");
+
 }

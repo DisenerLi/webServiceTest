@@ -1,6 +1,8 @@
 import com.bnq.webservice.client.HelloWorld;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean;
 
 import java.net.MalformedURLException;
@@ -10,13 +12,16 @@ import java.net.URL;
  * Created by liqiang on 2017/4/6.
  */
 public class ClientTest {
+
+    public static Logger logger = LoggerFactory.getLogger(ClientTest.class);
+
     public static void main(String[] args) throws Exception {
         URL wsdlURL = new URL("http://localhost:8080/webService/services/HelloWorld?wsdl");
         QName serviceName = new QName("http://www.tmp.web/ws/hello","HelloWSService");
         Service service = Service.create(wsdlURL,serviceName);
         HelloWorld helloWorld = service.getPort(HelloWorld.class);
         String res = helloWorld.sayHelloWorldFrom(" jack");
-        System.out.println("response = [" + res + "]");
+        logger.info("response = [" + res + "]");
         JaxWsPortProxyFactoryBean clientWebService = clientWebService();
         Object object = clientWebService.getObject();
         //other method
