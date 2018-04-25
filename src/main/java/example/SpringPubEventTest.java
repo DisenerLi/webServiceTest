@@ -27,6 +27,7 @@ public class SpringPubEventTest {
     }
     @Test
     public void testPubEvent(){
-        publisher.processTestEvent("hello world");
+        //publisher.processTestEvent("hello world");
+        publisher.processMyEvent("my notice");
     }
 }

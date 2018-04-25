@@ -6,8 +6,9 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 /**
  * Created by liqiang on 2018/4/24.
@@ -33,8 +34,10 @@ public class CodeParseUtil {
                     return false;
                 }
             });
-            for (File javaFile : files) {
-                makeFileDir(javaFile);
+            if(files != null) {
+                for (File javaFile : files) {
+                    makeFileDir(javaFile);
+                }
             }
         }else {
             makeFileDir(file);
@@ -43,8 +46,9 @@ public class CodeParseUtil {
 
     private static void makeFileDir(File file) {
         try {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            /*FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);*/
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()));
             String line = null;
             while ((line = bufferedReader.readLine()) != null){
                 if(line.trim().startsWith(PACKAGE)){
@@ -59,37 +63,38 @@ public class CodeParseUtil {
         }
     }
 
-    private static void createFilePath(String basePath, String packagePath, File javaFile) {
+    private static void createFilePath(String basePath, String packagePath, File javaFile) throws IOException {
         String javaFileAbsPath = basePath + packagePath.trim().replace('.','\\');
         File file = new File(javaFileAbsPath);
+        boolean isMk;
         if (!file.exists()) {
-            file.mkdirs();
+            isMk = file.mkdirs();
+        }else {
+            isMk = true;
         }
-        FileInputStream fileInputStream = null;
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileInputStream = new FileInputStream(javaFile);
-            fileOutputStream = new FileOutputStream(javaFileAbsPath +"\\"+ javaFile.getName());
-            byte[] bytes = new byte[256];
-            int n = 0;
-            while ((n=fileInputStream.read(bytes)) != -1) {
-                fileOutputStream.write(bytes,0,n);
-                fileOutputStream.flush();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+        if(isMk) {
+            FileInputStream fileInputStream = null;
+            FileOutputStream fileOutputStream = null;
             try {
-                if(fileInputStream != null) {
-                    fileInputStream.close();
+                fileInputStream = new FileInputStream(javaFile);
+                fileOutputStream = new FileOutputStream(javaFileAbsPath + "\\" + javaFile.getName());
+                byte[] bytes = new byte[1024];
+                int n = 0;
+                while ((n = fileInputStream.read(bytes)) != -1) {
+                    fileOutputStream.write(bytes, 0, n);
+                    fileOutputStream.flush();
                 }
-                if(fileOutputStream != null) {
-                    fileOutputStream.close();
-                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                    if (fileInputStream != null) {
+                        fileInputStream.close();
+                    }
+                    if (fileOutputStream != null) {
+                        fileOutputStream.close();
+                    }
             }
         }
     }

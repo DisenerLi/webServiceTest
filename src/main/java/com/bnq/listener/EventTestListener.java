@@ -28,7 +28,7 @@ public class EventTestListener implements ApplicationListener {
 
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
-        System.out.println(event.getClass().toString());
+        System.out.println("eventType:"+event.getClass().toString());
 
         if(event instanceof SpringTestEvent){
             System.out.println("[onApplicationEvent]source:"+event.getSource());
