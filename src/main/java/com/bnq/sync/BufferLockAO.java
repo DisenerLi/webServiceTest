@@ -1,5 +1,7 @@
 package com.bnq.sync;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -8,8 +10,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class BufferLockAO extends Buffer{
     private ReentrantLock lock = new ReentrantLock();
-    private Condition lockReady = lock.newCondition();
-    private int count = 1;
+    private Condition writeReady = lock.newCondition();
+    private Condition readReady = lock.newCondition();
+    private AtomicInteger count = new AtomicInteger(1);
 
     public BufferLockAO(){
     }
@@ -17,14 +20,14 @@ public class BufferLockAO extends Buffer{
     public void write() throws InterruptedException{
         lock.lock();
         try {
-            long start = System.currentTimeMillis();
+            //long start = System.currentTimeMillis();
             //System.out.println("start write something>>>>>>>>>>>>>>>>>"+count);
             for (;;) {
                 //System.out.println("write line >>>>>>>>>>");
-                if(!isProcessReady){
-                    System.out.println(Thread.currentThread().getName()+" wait write>>>>"+count);
-                   lockReady.await();
-                }
+               /* if(!isProcessReady){
+                    //System.out.println(Thread.currentThread().getName()+" wait write>>>>"+count);
+                   lockReady.await(5, TimeUnit.SECONDS);
+                }*/
                 ////break;
                 //if (System.currentTimeMillis() - start >1000) {
                 //    if(count<=0){
@@ -34,38 +37,52 @@ public class BufferLockAO extends Buffer{
                 //    System.out.println(Thread.currentThread().getName()+" continue write>>>>"+count);
                 //    break;
                 //}
-                if(count <=0 ){
-                    break;
+                if(count.get() < 1 ){
+                    System.out.println(Thread.currentThread().getName()+" write something end-----------》"+count.incrementAndGet());
+                }else {
+                    System.out.println(Thread.currentThread().getName()+" write await");
+                    if(writeReady.await(10,TimeUnit.SECONDS)){
+                        System.out.println(Thread.currentThread().getName()+" write weakup");
+                    }else {
+                        System.out.println("没有请求了，那关闭writer");
+                        break;
+                    }
                 }
-                //Thread.sleep(100);
-                System.out.println(Thread.currentThread().getName()+" get "+count);
-                count--;
-                break;
+
+                //break;
             }
             //System.out.println("end write <<<<<<<<<<<<<<<<<<<<<<<<");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            readReady.signal();
             lock.unlock();
-            isProcessReady = false;
+            //isProcessReady = false;
         }
     }
 
     public void read() throws InterruptedException {
-        if(isProcessReady == true){
+        /*if(isProcessReady){
             isProcessReady = false;
-        }
+        }*/
         lock.lock();
         try {
-            lockReady.signal();
-            System.out.println(Thread.currentThread().getName()+" read something end-----------》"+count);
+            //readReady.await();
             //Thread.sleep(2000);
             //isProcessReady = true;
-            if(count > 0 ){
-                System.out.println(Thread.currentThread().getName()+" get" + count);
-                count--;
-                Thread.sleep(100);
+            if(count.get() > 0 ){
+                //System.out.println(Thread.currentThread().getName()+" read get " + count);
+                System.out.println(Thread.currentThread().getName()+" read something end-----------》"+count.getAndDecrement());
+                //Thread.sleep(100);
+            }else{
+                //System.out.println(Thread.currentThread().getName()+" read empty -----------》"+count.get());
+                writeReady.signal();
+                System.out.println(Thread.currentThread().getName()+" read await");
+                readReady.await();
+                System.out.println(Thread.currentThread().getName()+" read weakup");
+                read();
             }
+            //lockReady.signal();
         }finally {
             lock.unlock();
         }
@@ -73,5 +90,9 @@ public class BufferLockAO extends Buffer{
 
     public void setProcessReady(){
         isProcessReady = true;
+    }
+
+    public void endRead(){
+        isProcessReady = false;
     }
 }

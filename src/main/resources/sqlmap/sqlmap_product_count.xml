@@ -118,4 +118,27 @@
         where id = #{id}
     </update>
 
+    <update id="updateWithSaleCount" parameterType="java.util.Map">
+        update product_count
+        set
+        <if test="productCode != null">
+            product_code = #{productCountDO.productCode},
+        </if>
+        <if test="productName != null">
+            product_name = #{productCountDO.productName},
+        </if>
+        <if test="productNum != null">
+            product_num = #{productCountDO.productNum},
+        </if>
+        <if test="saleCount != null">
+            sale_count = #{productCountDO.saleCount},
+        </if>
+        <if test="isDelete != null">
+            is_delete = #{productCountDO.isDelete},
+        </if>
+        update_time = now()
+        where id = #{id}
+        and sale_count = #{count}
+    </update>
+
 </mapper>

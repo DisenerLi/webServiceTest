@@ -1,13 +1,15 @@
 package com.bnq.common.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 
 /**
@@ -17,22 +19,19 @@ public class CodeParseUtil {
 
     public static final String PACKAGE = "package";
     public static final String basePath = "D:\\workspace\\webServiceTest\\src\\main\\java\\com\\bnq\\code\\";
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         readFile("D:\\workspace\\webServiceTest\\src\\main\\java\\com\\bnq\\ao");
     }
 
-    public static void readFile(String path){
+    public static void readFile(String path) throws IOException {
         File file = new File(path);
         if(file.isDirectory()){
-            File[] files = file.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    if (pathname != null) {
-                        boolean b = pathname.getName().endsWith(".java");
-                        return b;
-                    }
-                    return false;
+            File[] files = file.listFiles(pathname -> {
+                if (pathname != null) {
+                    boolean b = pathname.getName().endsWith(".java");
+                    return b;
                 }
+                return false;
             });
             if(files != null) {
                 for (File javaFile : files) {
@@ -44,26 +43,42 @@ public class CodeParseUtil {
         }
     }
 
-    private static void makeFileDir(File file) {
+    private static void makeFileDir(File file) throws IOException {
+        BufferedReader bufferedReader = null;
+        PrintWriter out = null;
+        String line = null;
+        String filePath = null;
         try {
             /*FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);*/
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()));
-            String line = null;
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.defaultCharset()));
             while ((line = bufferedReader.readLine()) != null){
-                if(line.trim().startsWith(PACKAGE)){
+                if(filePath == null && line.trim().startsWith(PACKAGE)){
                     String packagePath = line.substring(line.indexOf(PACKAGE) + PACKAGE.length(), line.indexOf(";"));
-                    createFilePath(basePath,packagePath,file);
+                    filePath = createFilePath(basePath, packagePath, file);
+                }
+                if(filePath != null) {
+                    if(out == null) {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath + "\\" + file.getName()), Charset.defaultCharset())),true);
+                    }
+                    out.println(line);
                 }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if(bufferedReader != null){
+                bufferedReader.close();
+            }
+            if(out != null){
+                out.close();
+            }
         }
     }
 
-    private static void createFilePath(String basePath, String packagePath, File javaFile) throws IOException {
+    private static String createFilePath(String basePath, String packagePath, File javaFile) throws IOException {
         String javaFileAbsPath = basePath + packagePath.trim().replace('.','\\');
         File file = new File(javaFileAbsPath);
         boolean isMk;
@@ -72,30 +87,9 @@ public class CodeParseUtil {
         }else {
             isMk = true;
         }
-        if(isMk) {
-            FileInputStream fileInputStream = null;
-            FileOutputStream fileOutputStream = null;
-            try {
-                fileInputStream = new FileInputStream(javaFile);
-                fileOutputStream = new FileOutputStream(javaFileAbsPath + "\\" + javaFile.getName());
-                byte[] bytes = new byte[1024];
-                int n = 0;
-                while ((n = fileInputStream.read(bytes)) != -1) {
-                    fileOutputStream.write(bytes, 0, n);
-                    fileOutputStream.flush();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                    if (fileInputStream != null) {
-                        fileInputStream.close();
-                    }
-                    if (fileOutputStream != null) {
-                        fileOutputStream.close();
-                    }
-            }
+        if(isMk){
+            return javaFileAbsPath;
         }
+        return null;
     }
 }

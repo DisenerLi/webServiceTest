@@ -1,8 +1,10 @@
 package com.bnq.sync;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by liqiang on 2017/7/28.
@@ -36,7 +38,7 @@ public class WriteAndReadLock {
             //System.out.println("t2.isInterrupted() == "+t2.isInterrupted());
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         final Buffer bufferAO = new BufferLockAO();
         //final Writer writer = new Writer(bufferAO);
         final CountDownLatch begin = new CountDownLatch(1); //为0时开始执行
@@ -47,47 +49,26 @@ public class WriteAndReadLock {
         //ThreadPoolExecutor executor = new ThreadPoolExecutor(100,500,1000, TimeUnit.MILLISECONDS,workQueue);
 
         for (int i = 1; i <= 100; i++) {
-                //String task = "task@ " + i;
-                //System.out.println("创建任务并提交到线程池中：" + task);
-                //executor.execute(writer);
-
             final int finalI = i;
-            exec.submit(new Runnable() {
-                    public void run() {
-                        bufferAO.setProcessReady();
-                        try {
-                            begin.await();
-                            if(finalI %2==0) {
-                                bufferAO.write();
-                            }else {
-                                bufferAO.read();
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+           exec.execute(() -> {
+                //bufferAO.setProcessReady();
+                try {
+                    begin.await();
+                    if(finalI %2==0) {
+                        bufferAO.write();
+                    }else {
+                        bufferAO.read();
                     }
-                });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            //System.out.println("get:"+submit.isDone());
         }
         System.out.println("开始执行");
         begin.countDown(); // begin减一，开始并发执行
-        exec.shutdown();
-        //
-        //final Thread t1 = new Thread(writer,"writer1");
-        //final Thread t2 = new Thread(writer,"writer2");
-        //final Thread t3 = new Thread(writer,"writer3");
-        //final Thread t4 = new Thread(writer,"writer4");
-        //final Thread t5 = new Thread(writer,"writer5");
-        //final Thread t6 = new Thread(writer,"writer6");
-        ////final Thread t2 =  new Thread(reader,"reader");
-        //bufferAO.setProcessReady();
-        //t1.start();
-        //t2.start();
-        //t3.start();
-        //t4.start();
-        //t5.start();
-        //t6.start();
-        ////t2.start();
-
+        exec.awaitTermination(5, TimeUnit.SECONDS);//等待直到关闭后所有任务都已完成执行请求，或发生超时，或当前线程为中断，以先发生者为准。然后调用shutdown关闭线程池
+        exec.shutdown();//停止线程池
     }
 
     static class Writer implements Runnable{

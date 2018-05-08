@@ -5,7 +5,7 @@ package com.bnq.sync;
  */
 public abstract class Buffer {
 
-    protected boolean isProcessReady = false;
+    protected volatile boolean isProcessReady = false;
 
     /**
      * 读

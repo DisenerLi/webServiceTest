@@ -19,6 +19,8 @@ public class ProductAO extends BaseAO {
     public static final String MESSAGE = "message";
     public static final String DATA = "data";
 
+    public static int count = 12;
+
     @Autowired
     private ProductCountDao productCountDao;
 
@@ -40,4 +42,23 @@ public class ProductAO extends BaseAO {
 
        return resMap;
     }
+
+    public long decrProduct(Long id){
+        ProductCountDO productCountDO = productCountDao.queryById(id);
+        productCountDO.setProductNum(productCountDO.getProductNum()-1);
+        long update = productCountDao.updateWithSaleCount(productCountDO, productCountDO.getSaleCount());
+        System.out.println("update res:"+update);
+        return update;
+    }
+
+    /**
+     * 减少数量
+     * @return
+     */
+    public int decrCount(){
+        count--;
+        return count;
+    }
+
+
 }

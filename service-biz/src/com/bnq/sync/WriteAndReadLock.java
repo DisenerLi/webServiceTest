@@ -1,43 +1,12 @@
 package com.bnq.sync;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 /**
  * Created by liqiang on 2017/7/28.
  */
 public class WriteAndReadLock {
 
-    public static void mains(String[] args) {
-            BufferLockAO bufferAO = new BufferLockAO();
-            final Writer writer = new Writer(bufferAO);
-            final Reader reader = new Reader(bufferAO);
-            final Thread t1 = new Thread(writer, "writer");
-            final Thread t2 = new Thread(reader, "reader");
-            bufferAO.setProcessReady();
-            t1.start();
-            t2.start();
-            new Thread(new Runnable() {
-                public void run() {
-                    long start = System.currentTimeMillis();
-                    for (; ; ) {
-                        //等5秒钟去中断读
-                        if (System.currentTimeMillis()
-                            - start > 5000) {
-                            System.out.println("不等了，尝试中断");
-                            t2.interrupt();
-                            System.out.println("t2.isInterrupted() == " + t2.isInterrupted());
-                            break;
-                        }
-                    }
-                }
-            }).start();
-            //System.out.println("t2.isInterrupted() == "+t2.isInterrupted());
-    }
-
     public static void main(String[] args) {
-        final Buffer bufferAO = new BufferLockAO();
+        /*final Buffer bufferAO = new BufferLockAO();
         //final Writer writer = new Writer(bufferAO);
         final CountDownLatch begin = new CountDownLatch(1); //为0时开始执行
         final ExecutorService exec = Executors.newFixedThreadPool(100);
@@ -70,7 +39,7 @@ public class WriteAndReadLock {
         }
         System.out.println("开始执行");
         begin.countDown(); // begin减一，开始并发执行
-        exec.shutdown();
+        exec.shutdown();*/
         //
         //final Thread t1 = new Thread(writer,"writer1");
         //final Thread t2 = new Thread(writer,"writer2");

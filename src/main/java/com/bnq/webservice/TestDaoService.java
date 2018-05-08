@@ -24,7 +24,6 @@ public class TestDaoService {
      */
     @WebMethod
     public User getUser(@WebParam(name = "userid",partName = "userid") String userid){
-
         return new User();
     }
 }
