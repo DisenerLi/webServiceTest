@@ -314,6 +314,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--zookeeper-->
         <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
@@ -324,6 +325,13 @@
             <artifactId>zookeeper</artifactId>
             <version>3.4.8</version>
         </dependency>
+        <!--guava-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.0-jre</version>
+        </dependency>
+
 
     </dependencies>
 

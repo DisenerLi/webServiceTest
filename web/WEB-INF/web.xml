@@ -56,23 +56,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>-->
     <servlet>
-        <servlet-name>Admin</servlet-name>
-        <servlet-class>
-            org.logicalcobwebs.proxool.admin.servlet.AdminServlet
-        </servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Admin</servlet-name>
-        <url-pattern>/admin</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <description>JAX-WS endpoint</description>
-        <display-name>WSServlet</display-name>
         <servlet-name>WSServlet</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>WSServlet</servlet-name>
         <url-pattern>/services/*</url-pattern>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.bnq.dao.ProductCountDao">
+<mapper namespace="com.bnq.dao.ProductCountDao" >
     <resultMap id="productCount" type="com.bnq.entity.ProductCountDO">
         <id property="id" column="id" javaType="Long" />
         <result property="createTime" column="create_time" />
@@ -53,6 +53,13 @@
         <include refid="selectColumn" />
         from product_count
         <include refid="queryWhereSql"/>
+    </select>
+
+    <select id="queryById" resultMap="productCount" parameterType="long" >
+        select
+        <include refid="selectColumn" />
+        from product_count
+        where id = #{id}
     </select>
 
     <select id="count" resultMap="productCount" parameterType="com.bnq.dao.query.ProductCountQuery">
@@ -121,23 +128,23 @@
     <update id="updateWithSaleCount" parameterType="java.util.Map">
         update product_count
         set
-        <if test="productCode != null">
+        <if test="productCountDO.productCode != null">
             product_code = #{productCountDO.productCode},
         </if>
-        <if test="productName != null">
+        <if test="productCountDO.productName != null">
             product_name = #{productCountDO.productName},
         </if>
-        <if test="productNum != null">
+        <if test="productCountDO.productNum != null">
             product_num = #{productCountDO.productNum},
         </if>
-        <if test="saleCount != null">
+        <if test="productCountDO.saleCount != null">
             sale_count = #{productCountDO.saleCount},
         </if>
-        <if test="isDelete != null">
+        <if test="productCountDO.isDelete != null">
             is_delete = #{productCountDO.isDelete},
         </if>
         update_time = now()
-        where id = #{id}
+        where id = #{productCountDO.id}
         and sale_count = #{count}
     </update>
 

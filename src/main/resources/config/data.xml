@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--<bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -82,7 +83,6 @@
         <property name="dataSource" ref="dataSource">
         </property>
     </bean>
-
     <tx:annotation-driven/>
 
     <bean id="transactionTemplate"
@@ -90,5 +90,22 @@
         <property name="transactionManager" ref="transactionManager">
         </property>
     </bean>
+
+    <!--<tx:advice id="txAdvice">
+        &lt;!&ndash; the transactional semantics... &ndash;&gt;
+        <tx:attributes>
+            &lt;!&ndash; all methods starting with 'get' are read-only &ndash;&gt;
+            <tx:method name="get*" read-only="true"/>
+            &lt;!&ndash; other methods use the default transaction settings (see below) &ndash;&gt;
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    &lt;!&ndash; ensure that the above transactional advice runs for any execution
+        of an operation defined by the FooService interface &ndash;&gt;
+    <aop:config>
+        <aop:pointcut id="daoOperation" expression="execution(* com.bnq.dao.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="daoOperation"/>
+    </aop:config>-->
 
 </beans>

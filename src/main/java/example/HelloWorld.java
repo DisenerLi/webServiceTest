@@ -112,10 +112,16 @@ public class HelloWorld extends SpringBeanAutowiringSupport {
     return "hello "+ Json;
   }
 
+  @WebMethod
+  public @WebResult(name="result")long getProduct(long id){
+      long l = productAO.decrProduct(id);
+      return l;
+  }
+
   public static void main(String[] argv) throws Exception{
     loadFile();
     Object implementor = new HelloWorld ();
-    String address = "http://localhost:80/HelloWorld";
+    String address = "http://localhost:8080/HelloWorld";
     Endpoint endpoint = Endpoint.publish(address, implementor);
     if(endpoint.isPublished()){
         List<Source> metadata= endpoint.getMetadata();

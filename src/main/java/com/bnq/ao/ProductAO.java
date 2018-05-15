@@ -46,8 +46,11 @@ public class ProductAO extends BaseAO {
     public long decrProduct(Long id){
         ProductCountDO productCountDO = productCountDao.queryById(id);
         productCountDO.setProductNum(productCountDO.getProductNum()-1);
-        long update = productCountDao.updateWithSaleCount(productCountDO, productCountDO.getSaleCount());
-        System.out.println("update res:"+update);
+        Integer oldCount = productCountDO.getSaleCount();
+        Integer newCount = oldCount + 1;
+        productCountDO.setSaleCount(newCount);
+        long update = productCountDao.updateWithSaleCount(productCountDO, oldCount);
+        //System.out.println("update res:"+update);
         return update;
     }
 

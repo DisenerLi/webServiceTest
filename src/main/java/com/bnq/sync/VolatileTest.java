@@ -27,10 +27,10 @@ public class VolatileTest {
         t2.start();
         t3.start();
         t4.start();
-        System.out.println(SyncThread.count.get());
+        System.out.println(syncThread.count.get());
         doneSignal.countDown();
         countDownLatch.await();
-        System.out.println(SyncThread.count.get());
+        System.out.println(syncThread.count.get());
     }
 
     public void addA(){
@@ -71,12 +71,12 @@ public class VolatileTest {
 
     public static class SyncThread implements Runnable{
 
-        public static AtomicInteger count = new AtomicInteger();
+        public AtomicInteger count = new AtomicInteger();
 
         private byte[] lock = new byte[0];
 
         public SyncThread(int count){
-            SyncThread.count.set(count);
+            this.count.set(count);
         }
 
         private static int applyAsInt(int count) {
@@ -85,41 +85,27 @@ public class VolatileTest {
         }
 
         public void setCount(int count){
-            SyncThread.count.set(count);
+            this.count.set(count);
         }
 
         public void delCount() throws InterruptedException {
-                /*for (int i = 0; i < 10 && count > 0; i++) {
-                System.out.println(Thread.currentThread().getName() + " count:" + count.decrementAndGet());
-                    //--count;
-                    //System.out.println(Thread.currentThread().getName() + " count:" + count);
-                }*/
-                int val;
-                while (0 < (count.get())) {
+                while (0 < count.get()) {
                     //val = count.decrementAndGet();
                     System.out.println(Thread.currentThread().getName() + " count:" + count.decrementAndGet());
                 }
             //count.getAndUpdate(SyncThread::applyAsInt);
-
         }
 
         public void run() {
-             /*(lock){*/
-                try {
-                    /*for (int i = 0; i < 2; i++) {
-                        //System.out.println(Thread.currentThread().getName() + " count:" + (count++));
-                        setCount(count + i);
-                    }*/
-                    //System.out.println(Thread.currentThread().getName() + " start :" + System.currentTimeMillis());
-                    doneSignal.await();
-                    //System.out.println(Thread.currentThread().getName() + " continue :" + System.currentTimeMillis());
-                    delCount();
-                    countDownLatch.countDown();
-                    //Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            //}
+            try {
+                doneSignal.await();
+                //System.out.println(Thread.currentThread().getName() + " continue :" + System.currentTimeMillis());
+                delCount();
+                countDownLatch.countDown();
+                //Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

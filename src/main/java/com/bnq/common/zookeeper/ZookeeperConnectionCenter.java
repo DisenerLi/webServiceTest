@@ -15,11 +15,16 @@ public class ZookeeperConnectionCenter {
     final CountDownLatch connectedSignal = new CountDownLatch(1);
 
     public ZooKeeper connect(String host) throws IOException {
-        zooKeeper = new ZooKeeper(host, 5000, event -> {
+        zooKeeper = new ZooKeeper(host, 30000, event -> {
             if (event.getState() == Watcher.Event.KeeperState.SyncConnected) {
                 connectedSignal.countDown();
             }
         });
+        try {
+            connectedSignal.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return zooKeeper;
     }
 

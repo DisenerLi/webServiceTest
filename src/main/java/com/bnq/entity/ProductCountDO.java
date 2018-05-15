@@ -56,14 +56,6 @@ public class ProductCountDO {
         this.productCode = productCode;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     public Integer getProductNum() {
         return productNum;
     }
@@ -80,4 +72,19 @@ public class ProductCountDO {
         this.saleCount = saleCount;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 }
