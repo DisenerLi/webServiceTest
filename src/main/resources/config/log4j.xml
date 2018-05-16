@@ -40,7 +40,7 @@
     </logger>
 
     <root>
-        <priority value="INFO" />
+        <priority value="DEBUG" />
         <appender-ref ref="webservice_console" />
         <!--<appender-ref ref="webservice_log" />-->
     </root>

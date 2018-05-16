@@ -5,11 +5,12 @@ package example;
  */
 public class ShellSort {
     public static void main(String[] args) {
-        int[] nums = {1,6,7,5,4};
+        int[] nums = {26, 53, 67, 48, 57, 13, 48, 32, 60, 50 };
         print(nums);
+        System.out.println(System.nanoTime()/1000L);
         shellSort(nums);
-        System.out.println();
         print(nums);
+        System.out.println(System.nanoTime()/1000L);
     }
 
     private static void shellSort(int[] nums) {
@@ -38,5 +39,6 @@ public class ShellSort {
         for (int num : nums) {
             System.out.print(num + "\t");
         }
+        System.out.println();
     }
 }

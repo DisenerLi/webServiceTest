@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>login</title>
+    <link rel="icon" href="/webService/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js" ></script>
 </head>
 <body>

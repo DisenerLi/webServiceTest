@@ -1,5 +1,6 @@
 package com.bnq.sync;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -11,6 +12,8 @@ public class TestDeadLockCTU implements Runnable{
     private ReentrantLock lock1 = new ReentrantLock();
     private ReentrantLock lock2 = new ReentrantLock();
 
+    private static CountDownLatch countDownLatch = new CountDownLatch(1);
+
     private boolean flag ;
 
     public TestDeadLockCTU(boolean flag){
@@ -20,6 +23,7 @@ public class TestDeadLockCTU implements Runnable{
     @Override
     public void run() {
         try{
+            countDownLatch.await();
             if(flag) {
                 lock1.lockInterruptibly();
                 System.out.println("lock1.lockInterruptibly()");
@@ -52,7 +56,10 @@ public class TestDeadLockCTU implements Runnable{
         thread1.start();
         thread2.start();
         //主线程休眠5秒
-        //TimeUnit.SECONDS.sleep(5);
-        //thread1.interrupt();
+        TimeUnit.SECONDS.sleep(5);
+        //thread1.join();
+        //thread2.join();
+        countDownLatch.countDown();
+        thread1.interrupt();
     }
 }

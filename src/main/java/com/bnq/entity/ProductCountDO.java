@@ -1,11 +1,12 @@
 package com.bnq.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by liqiang on 2017/11/6.
  */
-public class ProductCountDO {
+public class ProductCountDO implements Serializable {
 
     //id
     private Long id;
@@ -86,5 +87,19 @@ public class ProductCountDO {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductCountDO{" +
+            "id=" + id +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            ", productCode='" + productCode + '\'' +
+            ", productName='" + productName + '\'' +
+            ", productNum=" + productNum +
+            ", saleCount=" + saleCount +
+            ", isDelete=" + isDelete +
+            '}';
     }
 }
