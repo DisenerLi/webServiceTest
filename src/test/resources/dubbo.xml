@@ -10,6 +10,8 @@
 
     <dubbo:registry protocol="zookeeper" address="zookeeper://10.184.120.23:2181" />
 
-    <dubbo:reference id="productService" interface="com.bnq.service.dubbo.IProductService" group="dubbo"/>
+    <dubbo:reference id="productService" interface="com.bnq.service.dubbo.IProductService" version="1.0.1" async="true" timeout="3000" group="dubbo"/>
+    <dubbo:reference id="newProductService" interface="com.bnq.service.dubbo.IProductService" version="1.0.1" timeout="3000" group="provide"/>
 
+    <dubbo:monitor protocol="registry"/>
 </beans>

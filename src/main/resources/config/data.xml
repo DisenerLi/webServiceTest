@@ -50,10 +50,10 @@
             <value>com.mysql.jdbc.Driver</value>
         </property>
         <property name="driverUrl">
-            <value>jdbc:mysql://127.0.0.1:3306/studys?characterEncoding=utf-8&amp;useUnicode=true&amp;allowMultiQueries=true&amp;zeroDateTimeBehavior=convertToNull</value>
+            <value>jdbc:mysql://192.168.242.246:3306/studys?characterEncoding=utf-8&amp;useUnicode=true&amp;allowMultiQueries=true&amp;zeroDateTimeBehavior=convertToNull</value>
         </property>
-        <property name="user" value="root" />
-        <property name="password" value="123456" />
+        <property name="user" value="dev" />
+        <property name="password" value="qwe123" />
         <property name="alias" value="studys" />
         <property name="houseKeepingSleepTime" value="90000" />
         <property name="prototypeCount" value="0" />

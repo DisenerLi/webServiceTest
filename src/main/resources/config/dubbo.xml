@@ -10,8 +10,14 @@
 
     <dubbo:registry address="zookeeper://10.184.120.23:2181" />
 
-    <dubbo:service interface="com.bnq.service.dubbo.IProductService" ref="productService" group="dubbo"/>
+    <dubbo:service interface="com.bnq.service.dubbo.IProductService" cluster="" ref="productService" group="dubbo" version="1.0.0" />
+    <dubbo:service interface="com.bnq.service.dubbo.IProductService" ref="productService" group="dubbo" version="1.0.1" />
+    <dubbo:service interface="com.bnq.service.dubbo.IProductService" ref="productService" group="provide" version="1.0.1" />
 
-    <dubbo:protocol name="dubbo" host="192.168.243.14" port="20889" />
+    <dubbo:protocol name="dubbo" host="127.0.0.1" port="20889" />
+
+    <dubbo:protocol name="rest" port="8099" server="tomcat"/>
+
+    <dubbo:monitor protocol="registry"/>
 
 </beans>
